@@ -98,10 +98,6 @@ SondaMarte inicializaSondaTexto(SondaMarte* sonda,float lat_i,float lon_i,float 
     return *sonda;
 }
 
-void InsereRochaSonda(SondaMarte *sonda, TListaRocha *compartimento) {
-     sonda->CompartimentoSonda = *compartimento;
-}
-
 void imprimirCompartimentoSonda(SondaMarte *sonda) {
     if (sonda == NULL) {
         printf("Erro: a sonda é nula.\n");

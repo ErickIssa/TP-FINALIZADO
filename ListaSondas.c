@@ -54,13 +54,14 @@ void ImprimeListaSondas(listaSonda* plista){
     }
 }
 
-void Imprime_I_Lista(listaSonda* plista){
+void operacao_I(listaSonda* plista){
 
     celulaSonda* atual = plista->primaSonda->pProxSonda;
 
     while(atual != NULL) {
         printf("Identificador: %d\n",atual->chaveSonda.identificadorSonda);
         imprimeCompartimentoSonda2(&atual->chaveSonda.CompartimentoSonda);
+        printf("\n");
         atual = atual->pProxSonda;
     }
 }
@@ -114,24 +115,20 @@ void operacaoR(listaSonda *ListaSonda, TRocha *rocha) {
         sondaAmz->CompartimentoSonda.pPrimeiro->pProx = NULL;
         sondaAmz->CompartimentoSonda.pUltimo = sondaAmz->CompartimentoSonda.pPrimeiro;
     }
-    TCelulaRocha *novarocha = (TCelulaRocha*) malloc(sizeof(TCelulaRocha));
+    TCelulaRocha *NovaCelulaRocha = (TCelulaRocha*) malloc(sizeof(TCelulaRocha));
 
     TRocha *novaRocha = (TRocha*) malloc(sizeof(TRocha));
     *novaRocha = *rocha; // Copia os valores de 'rocha' para a nova estrutura
-    novarocha->Item.Chave = novaRocha;
+    NovaCelulaRocha->Item.Chave = novaRocha;
 
     if (sondaAmz->CompartimentoSonda.pPrimeiro == NULL) {
-        sondaAmz->CompartimentoSonda.pUltimo = novarocha;
+        sondaAmz->CompartimentoSonda.pUltimo = NovaCelulaRocha;
     } 
     else {
-        sondaAmz->pesoAtual = sondaAmz->pesoAtual + novarocha->Item.Chave->peso;
-        sondaAmz->CompartimentoSonda.pUltimo->pProx = novarocha;
-        sondaAmz->CompartimentoSonda.pUltimo = novarocha;
+        sondaAmz->pesoAtual = sondaAmz->pesoAtual + NovaCelulaRocha->Item.Chave->peso;
+        sondaAmz->CompartimentoSonda.pUltimo->pProx = NovaCelulaRocha;
+        sondaAmz->CompartimentoSonda.pUltimo = NovaCelulaRocha;
     }
-    // sonda->capacidadeSonda -= rocha->peso;
-    
-    printf("--------------------------------\n");
-    printf("Rocha coletada!\nSonda: %d\n", sondaAmz->identificadorSonda);
 }
 
 void pontoComumSondas(listaSonda* sondasLista){ // colocar no .h
@@ -152,17 +149,6 @@ int categoria_repete(SondaMarte *sonda, char *categoria, float peso) {
         pAux = pAux->pProx;
     }
     return 0;
-}
-float mediaPesos(listaSonda* sondaLista){
-    
-    celulaSonda* atual = sondaLista->primaSonda->pProxSonda;
-    float pesototal;
-
-    while(atual != NULL) {
-        pesototal = atual->chaveSonda.pesoAtual + pesototal;
-        atual = atual->pProxSonda;
-    }
-    return pesototal;
 }
 
 void removeRochasDeTodasSondas(TListaRocha *compartimento, TListaRocha *listaRochasRemovidas){
@@ -190,7 +176,6 @@ void operacao_E(listaSonda* sondaLista, int qtdSondas){
     
     ApontadorRocha pAux = listatempo.pPrimeiro->pProx;
     
-    LImprimeC(listatempo);
     while (pAux != NULL) {
         PesoTsondas += pAux->Item.Chave->peso;
         pAux = pAux->pProx;
@@ -203,19 +188,6 @@ void operacao_E(listaSonda* sondaLista, int qtdSondas){
     }
 
 }
-
-// void retornar_rochas(listaSonda* sondaLista, TRocha *rocha, float media) {
-//     apontador pAux = sondaLista->primaSonda;
-
-//     while (pAux != sondaLista->ultSonda) {
-//         while (pAux->chaveSonda.pesoAtual <= media) {
-//             printf("inseriu\n");
-//             pAux->chaveSonda.pesoAtual  += rocha->peso;
-//         }
-//         pAux = pAux->pProxSonda;
-//     } 
-
-// }
 void retornar_rochas(listaSonda* ListaSonda, TRocha *rocha, float media) {
     SondaMarte *sondaAmz = NULL; // armazena uma possível sonda que irá coletar
     
@@ -239,23 +211,19 @@ void retornar_rochas(listaSonda* ListaSonda, TRocha *rocha, float media) {
         sondaAmz->CompartimentoSonda.pPrimeiro->pProx = NULL;
         sondaAmz->CompartimentoSonda.pUltimo = sondaAmz->CompartimentoSonda.pPrimeiro;
     }
-    TCelulaRocha *novarocha = (TCelulaRocha*) malloc(sizeof(TCelulaRocha));
+    TCelulaRocha *NovaCelulaRocha = (TCelulaRocha*) malloc(sizeof(TCelulaRocha));
 
     TRocha *novaRocha = (TRocha*) malloc(sizeof(TRocha));
     *novaRocha = *rocha; // Copia os valores de 'rocha' para a nova estrutura
-    novarocha->Item.Chave = novaRocha;
+    NovaCelulaRocha->Item.Chave = novaRocha;
 
     if (sondaAmz->CompartimentoSonda.pPrimeiro == NULL) {
-        sondaAmz->CompartimentoSonda.pUltimo = novarocha;
+        sondaAmz->CompartimentoSonda.pUltimo = NovaCelulaRocha;
     } 
     else {
-        sondaAmz->pesoAtual = sondaAmz->pesoAtual + novarocha->Item.Chave->peso;
-        sondaAmz->CompartimentoSonda.pUltimo->pProx = novarocha;
-        sondaAmz->CompartimentoSonda.pUltimo = novarocha;
+        sondaAmz->pesoAtual = sondaAmz->pesoAtual + NovaCelulaRocha->Item.Chave->peso;
+        sondaAmz->CompartimentoSonda.pUltimo->pProx = NovaCelulaRocha;
+        sondaAmz->CompartimentoSonda.pUltimo = NovaCelulaRocha;
     }
-    // sonda->capacidadeSonda -= rocha->peso;
-    
-    printf("--------------------------------\n");
-    printf("Rocha coletada!\nSonda: %d\n", sondaAmz->identificadorSonda);
 
 }

@@ -17,21 +17,23 @@ int main()
     {
         char operacao;
         int qntdOperacoes;
-        srand(time(NULL));
         SondaMarte sonda1;
         listaSonda sondasL;
+        int N_Sondas;
+        float lat_i, lon_i, c_i, v_i, nc_i;
+        TRocha novarocha;
+
+        srand(time(NULL));
         iniciaListaSonda(&sondasL);
 
         FILE *arq = NULL;
-        arq = fopen("teste2", "r");
+        arq = fopen("teste", "r");
         if (arq == NULL)
         {
             printf("falha na leitura\n");
             exit(0);
         }
 
-        int N_Sondas;
-        float lat_i, lon_i, c_i, v_i, nc_i;
         fscanf(arq, "%d", &N_Sondas);
         fgetc(arq);
 
@@ -44,13 +46,10 @@ int main()
         fscanf(arq, "%d", &qntdOperacoes);
         fgetc(arq);
 
-        ImprimeListaSondas(&sondasL);
-
         for (int i = 0; i < qntdOperacoes; i++)
         {
             fscanf(arq, "%c", &operacao);
             fgetc(arq);
-            TRocha novarocha;
 
             switch (operacao)
             {
@@ -58,11 +57,12 @@ int main()
             {
                 float lat, long_i, peso;
                 char minerais[100];
-                fscanf(arq, "%f %f %f ", &lat, &long_i, &peso);
-                
-                
                 TMineral x;
                 TListaMineral listaM;
+                
+                fscanf(arq, "%f %f %f", &lat, &long_i, &peso);
+                
+                
                 FLVaziaM(&listaM);
                 fgets(minerais, 100, arq);
                 
@@ -95,8 +95,8 @@ int main()
             }
             case 'I':
             {
-                Imprime_I_Lista(&sondasL);
-                ImprimeListaSondas(&sondasL);
+                operacao_I(&sondasL);
+                printf("(----------------------------------------)\n");
                 break;
             }
             default:
@@ -110,13 +110,15 @@ int main()
     {
         int qntdOperacoes;
         char operacao;
-        srand(time(NULL));
-        SondaMarte sonda1;
-        listaSonda sondasL;
-        iniciaListaSonda(&sondasL);
-
         int N_Sondas;
         float lat_i, lon_i, c_i, v_i, nc_i;
+        SondaMarte sonda1;
+        listaSonda sondasL;
+        TRocha novarocha;
+        
+        srand(time(NULL));
+        iniciaListaSonda(&sondasL);
+
 
         printf("Digite a quantidade de sondas que irao para Marte:\n");
         scanf("%d", &N_Sondas);
@@ -136,27 +138,27 @@ int main()
         {
             printf("Selecione a operacao: (R, I, E)\n");
             scanf(" %c", &operacao);
-            TRocha novarocha;
 
             switch (operacao)
             {
             case 'R':
             {
-                printf("Digite a latitude, longitude, peso e minerais (separados com espaco).\n");
+                TMineral x;
+                TListaMineral listaM;
                 float lat, long_i, peso;
                 char minerais[100];
+
+                printf("Digite a latitude, longitude, peso e minerais (separados com espaco).\n");
                 scanf("%f %f %f", &lat, &long_i, &peso);
                 fgets(minerais, sizeof(minerais), stdin);
                 minerais[strcspn(minerais, "\n")] = '\0';
-
                 // Inicializa a rocha
-
                 // Quebra os minerais em partes e adiciona à lista
                 const char delim[2] = " ";
                 char *parte = strtok(minerais, delim);
-                TMineral x;
-                TListaMineral listaM;
+
                 FLVaziaM(&listaM);
+
                 while (parte != NULL)
                 {
                     strcpy(x.nomeM, parte);
@@ -166,7 +168,6 @@ int main()
                     // e dps colocar na lista mineral da rocha
                 }
                 novarocha = preenche_rocha(&novarocha, lat, long_i, peso, &listaM);
-
                 // vamos colocar essa rocha em um compartimento
                 operacaoR(&sondasL, &novarocha);
 
@@ -180,7 +181,7 @@ int main()
             }
             case 'I':
             {
-                Imprime_I_Lista(&sondasL);
+                operacao_I(&sondasL);
                 break;
             }
             default:

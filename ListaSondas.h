@@ -30,10 +30,9 @@ void redistribuiPeso(listaSonda* sondasLista);
 void removeRochasDeTodasSondas(TListaRocha *compartimento, TListaRocha *listaRochasRemovidas);
 int categoria_repete(SondaMarte *sonda, char *categoria, float peso);
 float retorna_peso(TListaRocha compartimento, char *categoria);
-void Imprime_I_Lista(listaSonda* plista);
+void operacao_I(listaSonda* plista);
 void operacao_E(listaSonda* sondaLista, int qntdSondas);
 void retornar_rochas(listaSonda* sondaLista, TRocha *rocha, float media);
 
-float mediaPesos(listaSonda* sondaLista);
 
 #endif
